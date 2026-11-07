@@ -12,4 +12,5 @@ export const navItems: NavItem[] = [
 export const authItems = {
   signIn: "/sign-in",
   signUp: "/sign-up",
+  signOut:"/signOut"
 } as const

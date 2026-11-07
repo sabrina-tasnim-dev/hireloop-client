@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
 import { MenuIcon } from "lucide-react"
@@ -15,8 +16,14 @@ import {
 } from "@/components/ui/sheet"
 import { authItems, navItems } from "@/lib/navigation"
 import { cn } from "@/lib/utils"
+import { useSession,signOut } from "@/lib/auth-client"
 
 export function MobileNav() {
+  const { data: session } = useSession();
+
+  const handleSignOut=async()=>{
+    await signOut()
+  }
   return (
     <Sheet>
       <SheetTrigger
@@ -55,28 +62,56 @@ export function MobileNav() {
         </nav>
         <Separator />
         <SheetFooter>
-          <SheetClose
-            nativeButton={false}
-            render={
-              <Link
-                href={authItems.signIn}
-                className={cn(buttonVariants({ variant: "outline" }), "w-full")}
-              />
-            }
-          >
-            Sign In
-          </SheetClose>
-          <SheetClose
-            nativeButton={false}
-            render={
-              <Link
-                href={authItems.signUp}
-                className={cn(buttonVariants({ variant: "brand" }), "w-full")}
-              />
-            }
-          >
-            Get Started
-          </SheetClose>
+          {session?.user ? (
+            <>
+            <span className="text-white">Welcome,{session.user.name}</span>
+            <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href={authItems.signOut}
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "w-full"
+                    )}
+                  />
+                }
+              >
+                Sign Out
+              </SheetClose>
+            </>
+          ) : (
+            <>
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href={authItems.signIn}
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "w-full"
+                    )}
+                  />
+                }
+              >
+                Sign In
+              </SheetClose>
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href={authItems.signUp}
+                    className={cn(
+                      buttonVariants({ variant: "brand" }),
+                      "w-full"
+                    )}
+                  />
+                }
+              >
+                Get Started
+              </SheetClose>
+            </>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>
