@@ -16,14 +16,14 @@ import {
 } from "@/components/ui/sheet"
 import { authItems, navItems } from "@/lib/navigation"
 import { cn } from "@/lib/utils"
-import { useSession,signOut } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 
 export function MobileNav() {
   const { data: session } = useSession();
 
-  const handleSignOut=async()=>{
-    await signOut()
-  }
+  // const handleSignOut=async()=>{
+  //   await signOut()
+  // }
   return (
     <Sheet>
       <SheetTrigger
