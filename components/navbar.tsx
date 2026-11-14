@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 
@@ -5,10 +7,16 @@ import { MobileNav } from "@/components/mobile-nav"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { authItems, navItems } from "@/lib/navigation"
+import { useSession } from "@/lib/auth-client"
 
 export function Navbar() {
+  const { data: session } = useSession()
+  const role = session?.user
+    ? ((session.user as { role?: string }).role ?? "seeker")
+    : undefined
+
   return (
-    <header className="sticky top-0 z-40 w-full px-3 pt-3 sm:px-4 sm:pt-4">
+    <header className="sticky top-0 z-40 w-full bg-background px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 rounded-2xl border border-border/60 bg-card/70 px-4 shadow-xs backdrop-blur-md sm:px-5">
         <Link
           href="/"
@@ -30,7 +38,7 @@ export function Navbar() {
             aria-label="Main"
             className="hidden items-center gap-6 md:flex lg:gap-8"
           >
-            {navItems.map((item) => (
+            {navItems(role).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

@@ -45,7 +45,11 @@ export function MobileNav() {
           />
         </SheetHeader>
         <nav aria-label="Mobile" className="flex flex-col gap-1 px-3 py-2">
-          {navItems.map((item) => (
+          {navItems(
+            session?.user
+              ? ((session.user as { role?: string }).role ?? "seeker")
+              : undefined
+          ).map((item) => (
             <SheetClose
               key={item.href}
               nativeButton={false}
